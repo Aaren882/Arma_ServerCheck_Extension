@@ -48,7 +48,12 @@ namespace Arma_ServerCheck_Extension
 			//- Check Server Status
 			try
 			{
-				var server = GetSteamServer(function, args, output);
+				var server = GetSteamServer(function, args[0], output);
+				if (server == null)
+				{
+					output.Append("No function be found");
+					return -1;
+				}
 
 				//- Setup Serialization
 				string jsonString = JsonSerializer.Serialize(server[0],
@@ -64,21 +69,22 @@ namespace Arma_ServerCheck_Extension
 				output.Append($"[{string.Join(",", UTF)}]");
 				return 0;
 			}
-			catch (Exception _)
+			catch (Exception e)
 			{
-				output.Append(_);
+				output.Append($"[{string.Join(",", Encoding.UTF32.GetBytes(e))}]");
 				return -1;
 			}
 		}
 
-		private static dynamic GetSteamServer(string function, string[] input, StringBuilder output)
+		private static dynamic GetSteamServer(string function, string input, StringBuilder output)
 		{
-			string[] info = input[0].Split(':');
-
+			string[] info = input.Split(':');
+			if (function == "ServerAsync") //- [IP, Steam Port, Timeout(ms)];
+				return SteamServer.QueryServerAsync(info[0], int.Parse(info[1]) + 1, 3000).Result;
 			if (function == "PlayersAsync") //- [IP, Steam Port, Timeout(ms)];
 				return SteamServer.QueryPlayersAsync(info[0], int.Parse(info[1]) + 1, 3000).Result;
-			else
-				return SteamServer.QueryServerAsync(info[0], int.Parse(info[1]) + 1, 3000).Result;
+			
+			return null;
 		}
 	}
 }
