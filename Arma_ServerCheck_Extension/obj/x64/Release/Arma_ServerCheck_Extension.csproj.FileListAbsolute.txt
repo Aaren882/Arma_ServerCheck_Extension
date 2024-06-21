@@ -1,0 +1,7 @@
+P:\Arma_ServerCheck_Extension\Arma_ServerCheck_Extension\obj\x64\Release\Arma_ServerCheck_Extension.csproj.AssemblyReference.cache
+P:\Arma_ServerCheck_Extension\Arma_ServerCheck_Extension\obj\x64\Release\Arma_ServerCheck_Extension.csproj.CoreCompileInputs.cache
+P:\Arma_ServerCheck_Extension\Arma_ServerCheck_Extension\bin\x64\Release\Arma_ServerCheck_Extension.dll
+P:\Arma_ServerCheck_Extension\Arma_ServerCheck_Extension\bin\x64\Release\Arma_ServerCheck_Extension.pdb
+P:\Arma_ServerCheck_Extension\Arma_ServerCheck_Extension\obj\x64\Release\Arma_ServerCheck_Extension.csproj.Fody.CopyLocal.cache
+P:\Arma_ServerCheck_Extension\Arma_ServerCheck_Extension\obj\x64\Release\Arma_ServerCheck_Extension.dll
+P:\Arma_ServerCheck_Extension\Arma_ServerCheck_Extension\obj\x64\Release\Arma_ServerCheck_Extension.pdb

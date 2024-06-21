@@ -1,13 +1,14 @@
 ﻿using RGiesecke.DllExport;
+using SteamServerQuery;
 using System;
-using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace Arma_ServerCheck_Extension
 {
-	public class DllEntry
+    public class DllEntry
 	{
 
 		#region Misc RVExtension Requirements
@@ -28,12 +29,10 @@ namespace Arma_ServerCheck_Extension
 		[DllExport("_RVExtension@12", CallingConvention = CallingConvention.Winapi)]
 #endif
 		public static void RvExtension(StringBuilder output, int outputSize,
-			[MarshalAs(UnmanagedType.LPStr)] string path)
+			[MarshalAs(UnmanagedType.LPStr)] string function)
 		{
 				outputSize--;
-				if (path == "")
-						path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + DateTime.Now.ToString("h:mm:ss tt");
-				output.Append(new ScreenCapture().TakeScreenshot(path));
+				output.Append(function);
 		}
 
 #if IS_x64
@@ -61,7 +60,7 @@ namespace Arma_ServerCheck_Extension
 				);
 				byte[] UTF = Encoding.UTF32.GetBytes(jsonString);
 
-				//- Return Values
+				//- Return Values (in 32Bit Unicode)
 				output.Append($"[{string.Join(",", UTF)}]");
 				return 0;
 			}
@@ -72,18 +71,14 @@ namespace Arma_ServerCheck_Extension
 			}
 		}
 
-		private static dynamic[] GetSteamServer(string function, string[] input, StringBuilder output)
+		private static dynamic GetSteamServer(string function, string[] input, StringBuilder output)
 		{
 			string[] info = input[0].Split(':');
 
 			if (function == "PlayersAsync") //- [IP, Steam Port, Timeout(ms)];
-			{
-				return [SteamServer.QueryPlayersAsync(info[0], int.Parse(info[1]) + 1, 3000).Result, 1];
-			}
+				return SteamServer.QueryPlayersAsync(info[0], int.Parse(info[1]) + 1, 3000).Result;
 			else
-			{
-				return [SteamServer.QueryServerAsync(info[0], int.Parse(info[1]) + 1, 3000).Result, 0];
-			}
+				return SteamServer.QueryServerAsync(info[0], int.Parse(info[1]) + 1, 3000).Result;
 		}
 	}
 }
