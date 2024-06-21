@@ -48,8 +48,8 @@ namespace Arma_ServerCheck_Extension
 			//- Check Server Status
 			try
 			{
-				var server = GetSteamServer(function, args[0], output);
-				if (server == null)
+				var server = GetSteamServer(function, args[0]);
+				if (server == "")
 				{
 					output.Append("No function be found");
 					return -1;
@@ -63,7 +63,7 @@ namespace Arma_ServerCheck_Extension
 						WriteIndented = true //- Better Formatting
 					}
 				);
-				byte[] UTF = Encoding.UTF32.GetBytes(jsonString);
+				int[] UTF = Tools.StringToCode32(jsonString);
 
 				//- Return Values (in 32Bit Unicode)
 				output.Append($"[{string.Join(",", UTF)}]");
@@ -71,20 +71,23 @@ namespace Arma_ServerCheck_Extension
 			}
 			catch (Exception e)
 			{
-				output.Append($"[{string.Join(",", Encoding.UTF32.GetBytes(e))}]");
+				Tools.Logger(e);
 				return -1;
 			}
 		}
 
-		private static dynamic GetSteamServer(string function, string input, StringBuilder output)
+		private static dynamic GetSteamServer(string function, string input)
 		{
-			string[] info = input.Split(':');
-			if (function == "ServerAsync") //- [IP, Steam Port, Timeout(ms)];
-				return SteamServer.QueryServerAsync(info[0], int.Parse(info[1]) + 1, 3000).Result;
+			string[] info = input.Trim('\"').Split(':');
+			Tools.Logger(null, info[1]);
+			Tools.Logger(null, $"{Int16.Parse(info[1])}");
+
+            if (function == "ServerAsync") //- [IP, Steam Port, Timeout(ms)];
+				return SteamServer.QueryServerAsync(info[0], Int16.Parse(info[1]) + 1, 3000).Result;
 			if (function == "PlayersAsync") //- [IP, Steam Port, Timeout(ms)];
-				return SteamServer.QueryPlayersAsync(info[0], int.Parse(info[1]) + 1, 3000).Result;
+				return SteamServer.QueryPlayersAsync(info[0], Int16.Parse(info[1]) + 1, 3000).Result;
 			
-			return null;
+			return "";
 		}
 	}
 }
