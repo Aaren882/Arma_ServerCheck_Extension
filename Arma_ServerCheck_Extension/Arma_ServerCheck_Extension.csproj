@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C71A1E67-9C19-493D-A69E-04A1AA18BE19}</ProjectGuid>
+    <ProjectGuid>{C179C077-A5DF-45AB-9868-1B51E805CCA8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Arma_ServerCheck_Extension</RootNamespace>
